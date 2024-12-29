@@ -1,0 +1,9 @@
+root = true 
+#root define que esse é o .editorconfig raiz do projeto
+#É possível que haja mais de um .editorconfig, um por diretório
+#A IDE processa todos os .editorconfig, do diretório atual até o raiz
+#O padrão do JS é de 2 espaços por indentação
+
+[*]
+indent_style = space 
+indent_size = 2
