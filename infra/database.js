@@ -8,7 +8,6 @@ async function query(query) {
     database: process.env.POSTGRES_DB,
     password: process.env.POSTGRES_PASSWORD
   });
-  console.log('datab?' + client.database)
   await client.connect();
 
   const response = await client.query(query);
