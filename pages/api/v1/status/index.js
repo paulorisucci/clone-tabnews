@@ -18,8 +18,6 @@ async function status(request, response) {
     .count
   );
 
-  console.log(openedConnections);
-
   response.status(200).json({
     updated_at: updatedAt,
     dependencies: {
