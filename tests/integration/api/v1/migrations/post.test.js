@@ -1,4 +1,5 @@
 import database from "infra/database";
+
 beforeAll(cleanDatabase);
 
 async function cleanDatabase() {
