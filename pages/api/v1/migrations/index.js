@@ -4,12 +4,12 @@ import database from 'infra/database';
 
 export default async function migrations(request, response) {
 
-  if (request.method === 'GET') {
+  if (request.method !== 'GET' && request.method !== 'POST') {
+    response.status(405).end();
+  } else if (request.method === 'GET') {
     const pendingMigrations = await findPendingMigrations();
     return response.status(200).json(pendingMigrations);
-  }
-
-  if (request.method === 'POST') {
+  } else {
     const migratedMigrations = await runMigrations();
 
     if (migratedMigrations.length > 0) {
@@ -18,30 +18,37 @@ export default async function migrations(request, response) {
     return response.status(200).json(migratedMigrations);
   }
 
-  response.status(405).end();
-
 }
 
 async function findPendingMigrations() {
-  const dbClient = await database.getNewClient();
-  const migrationOptions = getDefaultMigrationOptions(dbClient);
-
-  const pendingMigrations = await migrationRunner(migrationOptions);
-  await dbClient.end();
-  return pendingMigrations;
+  let dbClient;
+  try {
+    dbClient = await database.getNewClient();
+    const migrationOptions = getDefaultMigrationOptions(dbClient);
+    return await migrationRunner(migrationOptions);
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await dbClient.end();
+  }
 }
 
 async function runMigrations() {
-  const dbClient = await database.getNewClient();
-  const migrationOptions = getDefaultMigrationOptions(dbClient);
-  const migratedMigrations = await migrationRunner({
-    ...migrationOptions,
-    dryRun: false
-  });
-
-  await dbClient.end();
-
-  return migratedMigrations;
+  let dbClient;
+  try {
+    dbClient = await database.getNewClient();
+    const migrationOptions = getDefaultMigrationOptions(dbClient);
+    return await migrationRunner({
+      ...migrationOptions,
+      dryRun: false
+    });
+  } catch (error) {
+    console.error(error);
+    throw error;
+  } finally {
+    await dbClient.end();
+  }
 }
 
 function getDefaultMigrationOptions(dbClient) {
