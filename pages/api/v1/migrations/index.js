@@ -5,7 +5,9 @@ import database from 'infra/database';
 export default async function migrations(request, response) {
 
   if (request.method !== 'GET' && request.method !== 'POST') {
-    response.status(405).end();
+    response.status(405).json({
+      error: `Method "${request.method} not allowed"`
+    });
   } else if (request.method === 'GET') {
     const pendingMigrations = await findPendingMigrations();
     return response.status(200).json(pendingMigrations);
