@@ -6,6 +6,9 @@ import pluginJest from "eslint-plugin-jest";
 
 export default defineConfig([
   {
+    ignores: ["node_modules/", ".next/"],
+  },
+  {
     files: ["**/*.{js,mjs,cjs,jsx}"],
     plugins: { js, jest: pluginJest },
     extends: ["js/recommended"],
