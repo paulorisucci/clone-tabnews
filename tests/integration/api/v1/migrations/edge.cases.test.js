@@ -1,26 +1,29 @@
-import database from "infra/database";
 import orchestrator from "tests/orchestrator.js";
 
 beforeAll(async () => {
   await orchestrator.waitForAllServices();
-  await database.query("drop schema public cascade; create schema public;");
+  await orchestrator.clearDatabase();
 });
 
-test("DELETE to /api/v1/migrations should return 405", async () => {
-  const responseMigrations = await fetch(
-    "http://localhost:3000/api/v1/migrations",
-    {
-      method: "DELETE",
-    },
-  );
+describe("DELETE to /api/v1/migrations", () => {
+  describe("Anonymous user", () => {
+    test("Should return an error", async () => {
+      const responseMigrations = await fetch(
+        "http://localhost:3000/api/v1/migrations",
+        {
+          method: "DELETE",
+        },
+      );
 
-  const responseStatus = await fetch("http://localhost:3000/api/v1/status");
-  const responseStatusBody = await responseStatus.json();
-  const responseMigrationsBody = await responseMigrations.json();
+      const responseStatus = await fetch("http://localhost:3000/api/v1/status");
+      const responseStatusBody = await responseStatus.json();
+      const responseMigrationsBody = await responseMigrations.json();
 
-  expect(responseMigrations.status).toBe(405);
-  expect(responseStatusBody.dependencies.database.opened_connections).toEqual(
-    1,
-  );
-  expect(typeof responseMigrationsBody.error).toEqual("string");
+      expect(responseMigrations.status).toBe(405);
+      expect(
+        responseStatusBody.dependencies.database.opened_connections,
+      ).toEqual(1);
+      expect(typeof responseMigrationsBody.error).toEqual("string");
+    });
+  });
 });
