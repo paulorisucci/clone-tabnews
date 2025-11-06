@@ -31,5 +31,5 @@ async function clearDatabase() {
 
 export default {
   waitForAllServices,
-  clearDatabase
+  clearDatabase,
 };

@@ -20,9 +20,9 @@ describe("DELETE to /api/v1/migrations", () => {
       const responseMigrationsBody = await responseMigrations.json();
 
       expect(responseMigrations.status).toBe(405);
-      expect(responseStatusBody.dependencies.database.opened_connections).toEqual(
-        1,
-      );
+      expect(
+        responseStatusBody.dependencies.database.opened_connections,
+      ).toEqual(1);
       expect(typeof responseMigrationsBody.error).toEqual("string");
     });
   });

@@ -49,7 +49,10 @@ async function main() {
 
 function runAsync(command, args = []) {
   return new Promise((resolve, reject) => {
-    const proc = spawn(command, args, { stdio: "inherit", shell: needShellScript });
+    const proc = spawn(command, args, {
+      stdio: "inherit",
+      shell: needShellScript,
+    });
     proc.on("exit", (code, signal) => {
       if (code === 0 || signal === "SIGINT") {
         resolve();
