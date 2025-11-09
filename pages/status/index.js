@@ -45,9 +45,15 @@ export default function StatusPage() {
       <div>
         <h1>Base de dados</h1>
         <ul className={styles.unstyledUl}>
-          <li>Versão: {databaseData.version}</li>
-          <li>Número máximo de conexões: {databaseData.max_connections}</li>
-          <li>Conexões abertas: {databaseData.opened_connections}</li>
+          <li>Versão: {databaseData.version ?? "Carregando..."}</li>
+          <li>
+            Número máximo de conexões:{" "}
+            {databaseData.max_connections ?? "Carregando..."}
+          </li>
+          <li>
+            Conexões abertas:{" "}
+            {databaseData.opened_connections ?? "Carregando..."}
+          </li>
         </ul>
       </div>
     );
