@@ -23,7 +23,13 @@ describe("DELETE to /api/v1/migrations", () => {
       expect(
         responseStatusBody.dependencies.database.opened_connections,
       ).toEqual(1);
-      expect(typeof responseMigrationsBody.error).toEqual("string");
+      expect(responseMigrationsBody).toEqual({
+        name: "MethodNotAllowedError",
+        message: "Método não permitido para este endpoint.",
+        action:
+          "Verifique se o método HTTP enviado é válido para este endpoint.",
+        status_code: 405,
+      });
     });
   });
 });
