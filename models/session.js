@@ -74,8 +74,8 @@ async function renew(sessionId) {
         RETURNING
           *;
       `,
-      values: [sessionId, expiresAt]
-    })
+      values: [sessionId, expiresAt],
+    });
 
     return results.rows[0];
   }

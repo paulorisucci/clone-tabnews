@@ -26,6 +26,11 @@ describe("GET /api/v1/user", () => {
 
       expect(response.status).toBe(200);
 
+      const cacheControl = response.headers.get("Cache-Control");
+      expect(cacheControl).toBe(
+        "no-store, no-cache, max-age=0, must-revalidate",
+      );
+
       const responseBody = await response.json();
 
       expect(responseBody).toEqual({
@@ -130,7 +135,11 @@ describe("GET /api/v1/user", () => {
       const ONE_MINUTE_IN_MILLISECONDS = 60 * 1000;
 
       jest.useFakeTimers({
-        now: new Date(Date.now() - (sessionModel.EXPIRATION_IN_MILLISECONDS - ONE_MINUTE_IN_MILLISECONDS)),
+        now: new Date(
+          Date.now() -
+            (sessionModel.EXPIRATION_IN_MILLISECONDS -
+              ONE_MINUTE_IN_MILLISECONDS),
+        ),
       });
 
       const sessionObject = await orchestrator.createSession(createdUser.id);
@@ -173,7 +182,8 @@ describe("GET /api/v1/user", () => {
         renewedSessionObject.updated_at > sessionObject.updated_at,
       ).toEqual(true);
       expect(
-        renewedSessionObject.expires_at > new Date(Date.now() + ONE_MINUTE_IN_MILLISECONDS)
+        renewedSessionObject.expires_at >
+          new Date(Date.now() + ONE_MINUTE_IN_MILLISECONDS),
       );
 
       //Set-Cookie assertions

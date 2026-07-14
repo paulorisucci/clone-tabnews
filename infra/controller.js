@@ -1,5 +1,5 @@
 import * as cookie from "cookie";
-import session from "models/session.js"
+import session from "models/session.js";
 import {
   InternalServerError,
   MethodNotAllowedError,
@@ -46,5 +46,5 @@ export default {
     onNoMatch: onNoMatchHandler,
     onError: onErrorHandler,
   },
-  setSessionCookie
+  setSessionCookie,
 };

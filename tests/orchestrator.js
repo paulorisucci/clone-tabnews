@@ -38,7 +38,7 @@ async function runPendingMigrations() {
 }
 
 async function createSession(userId) {
-  return await session.create(userId)
+  return await session.create(userId);
 }
 
 async function createUser(userObject) {
@@ -58,5 +58,5 @@ export default {
   clearDatabase,
   runPendingMigrations,
   createUser,
-  createSession 
+  createSession,
 };
